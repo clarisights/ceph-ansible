@@ -4,6 +4,16 @@
      - not rolling_update | bool
      - not docker2podman | default(False) | bool
   block:
+<<<<<<< HEAD
+=======
+    - name: update apt cache
+      apt:
+        update-cache: yes
+      when: ansible_facts['os_family'] == 'Debian'
+      register: result
+      until: result is succeeded
+
+>>>>>>> Use ansible_facts
     - name: mons handler
       include_tasks: handler_mons.yml
       when: mon_group_name in group_names
