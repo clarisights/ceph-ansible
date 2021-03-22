@@ -38,9 +38,12 @@ class TestNFSs(object):
             cluster=cluster
         )
         output = host.check_output(cmd)
-        daemons = [i for i in json.loads(
-            output)["servicemap"]["services"]["rgw-nfs"]["daemons"]]
-        assert hostname in daemons
+        key = [i for i in json.loads(
+            output)["servicemap"]["services"]["rgw-nfs"]["daemons"].keys()]
+        key.remove('summary')
+
+        metadata = json.loads(output)["servicemap"]["services"]["rgw-nfs"]["daemons"][key[0]]["metadata"]  # noqa E501
+        assert hostname == metadata['hostname']
 
 # NOTE (guits): This check must be fixed. (Permission denied error)
 #    @pytest.mark.no_docker
